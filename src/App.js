@@ -17,13 +17,13 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { page, isModalOpen, articles } = this.state;
+    const { page, isModalOpen } = this.state;
 
-    // if (isModalOpen) return;
+    if (isModalOpen) return;
 
-    if (prevState.articles !== articles) {
+    if (prevState.page === page) {
       window.scrollTo({
-        top: document.body.scrollHeight,
+        top: document.documentElement.scrollHeight,
         behavior: "smooth",
       });
     }
