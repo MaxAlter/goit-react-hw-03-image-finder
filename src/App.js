@@ -17,7 +17,10 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { page } = this.state;
+    const { page, isModalOpen } = this.state;
+
+    if (isModalOpen) return;
+
     if (prevState.page === page) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
@@ -42,6 +45,7 @@ export default class App extends Component {
 
   handleClickOnMore = () => {
     const { page, query } = this.state;
+
     this.setState({
       page: page + 1,
     });
