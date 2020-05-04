@@ -17,11 +17,8 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { page, isModalOpen } = this.state;
-
-    if (isModalOpen) return;
-
-    if (prevState.page === page) {
+    const { articles } = this.state;
+    if (prevState.articles !== articles) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
@@ -69,11 +66,8 @@ export default class App extends Component {
     return (
       <div>
         <Searchbar onSubmit={this.fetchArticles} />
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <ImageGallery items={articles} openModal={this.openModal} />
-        )}
+        <ImageGallery items={articles} openModal={this.openModal} />
+        {isLoading && <Loader />}
         {articles.length > 0 && <Button onClick={this.handleClickOnMore} />}
         {isModalOpen && (
           <Modal largeImgURL={largeImgURL} closeModal={this.closeModal} />
