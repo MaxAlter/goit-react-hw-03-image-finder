@@ -12,7 +12,10 @@ export default class Searchbar extends Component {
   };
 
   handleOnChange = (e) => {
-    this.setState({ query: e.target.value });
+    const query = e.target.value;
+    this.setState({
+      query,
+    });
   };
 
   handleSubmit = (e) => {
@@ -22,7 +25,7 @@ export default class Searchbar extends Component {
   };
 
   render() {
-    const { query } = this.setState;
+    const query = this.state.query;
     return (
       <header className="Searchbar">
         <form className="SearchForm" onSubmit={this.handleSubmit}>

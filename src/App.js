@@ -42,11 +42,9 @@ export default class App extends Component {
 
   handleClickOnMore = () => {
     const { page, query } = this.state;
-
     this.setState({
       page: page + 1,
     });
-
     this.fetchArticles(query, page + 1);
   };
 
