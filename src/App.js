@@ -17,24 +17,24 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { articles, query } = this.state;
-
+    const { articles, page } = this.state;
     if (prevState.articles !== articles) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
       });
     }
-    if (prevState.query !== query) {
+
+    if (prevState.page !== page) {
       this.fetchArticles();
     }
   }
 
   fetchArticles = () => {
     const { query } = this.state;
-    this.setState({ isLoading: true, query });
+    this.setState({ isLoading: true });
     dataAPI
-      .fetchArticles(this.query, this.page)
+      .fetchArticles(this.state.query, this.state.page)
       .then(({ data }) => {
         const { articles } = this.state;
         this.setState({ articles: [...articles, ...data.hits] });
@@ -56,11 +56,10 @@ export default class App extends Component {
   ////////////////////////////////////////////
 
   handleClickOnMore = () => {
-    const { page, query } = this.state;
+    const { page } = this.state;
     this.setState({
       page: page + 1,
     });
-    this.fetchArticles(query, page + 1);
   };
 
   openModal = (largeImgURL) => {
