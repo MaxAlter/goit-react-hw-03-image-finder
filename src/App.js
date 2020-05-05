@@ -17,7 +17,7 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { articles, page } = this.state;
+    const { articles, query } = this.state;
     if (prevState.articles !== articles) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
@@ -25,26 +25,26 @@ export default class App extends Component {
       });
     }
 
-    if (prevState.page !== page) {
+    if (prevState.query !== query) {
       this.fetchArticles();
     }
   }
 
   fetchArticles = () => {
-    const { query } = this.state;
+    const { page, query, articles } = this.state;
     this.setState({ isLoading: true });
     dataAPI
-      .fetchArticles(this.state.query, this.state.page)
+      .fetchArticles(query, page)
       .then(({ data }) => {
-        const { articles } = this.state;
-        this.setState({ articles: [...articles, ...data.hits] });
+        this.setState({
+          articles: [...articles, ...data.hits],
+          page: page + 1,
+        });
       })
       .catch((error) => this.setState({ error }))
-      .finally(() => {
-        this.setState({ isLoading: false });
-      });
+      .finally(() => this.setState({ isLoading: false }));
   };
-  ////////////////////////////////////////////
+
   newRequest = (query) => {
     this.setState({
       query,
@@ -52,8 +52,6 @@ export default class App extends Component {
       articles: [],
     });
   };
-
-  ////////////////////////////////////////////
 
   handleClickOnMore = () => {
     const { page } = this.state;
@@ -80,7 +78,7 @@ export default class App extends Component {
         <Searchbar newRequest={this.newRequest} />
         <ImageGallery items={articles} openModal={this.openModal} />
         {isLoading && <Loader />}
-        {articles.length > 0 && <Button onClick={this.handleClickOnMore} />}
+        {articles.length > 0 && <Button onClick={this.fetchArticles} />}
         {isModalOpen && (
           <Modal largeImgURL={largeImgURL} closeModal={this.closeModal} />
         )}
@@ -88,19 +86,3 @@ export default class App extends Component {
     );
   }
 }
-
-/* <Searchbar onSubmit={this.fetchArticles} newRequest={this.newRequest} /> */
-
-// fetchArticles = (query, page = 1) => {
-//   this.setState({ isLoading: true, query });
-//   dataAPI
-//     .fetchArticles(query, page)
-//     .then(({ data }) => {
-//       const { articles } = this.state;
-//       this.setState({ articles: [...articles, ...data.hits] });
-//     })
-//     .catch((error) => this.setState({ error }))
-//     .finally(() => {
-//       this.setState({ isLoading: false });
-//     });
-// };
