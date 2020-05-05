@@ -17,20 +17,24 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { articles } = this.state;
+    const { articles, query } = this.state;
+
     if (prevState.articles !== articles) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
       });
     }
-    this.fetchArticles();
+    if (prevState.query !== query) {
+      this.fetchArticles();
+    }
   }
 
-  fetchArticles = (query, page = 1) => {
+  fetchArticles = () => {
+    const { query } = this.state;
     this.setState({ isLoading: true, query });
     dataAPI
-      .fetchArticles(query, page)
+      .fetchArticles(this.query, this.page)
       .then(({ data }) => {
         const { articles } = this.state;
         this.setState({ articles: [...articles, ...data.hits] });
@@ -86,4 +90,18 @@ export default class App extends Component {
   }
 }
 
-{/* <Searchbar onSubmit={this.fetchArticles} newRequest={this.newRequest} /> */}
+/* <Searchbar onSubmit={this.fetchArticles} newRequest={this.newRequest} /> */
+
+// fetchArticles = (query, page = 1) => {
+//   this.setState({ isLoading: true, query });
+//   dataAPI
+//     .fetchArticles(query, page)
+//     .then(({ data }) => {
+//       const { articles } = this.state;
+//       this.setState({ articles: [...articles, ...data.hits] });
+//     })
+//     .catch((error) => this.setState({ error }))
+//     .finally(() => {
+//       this.setState({ isLoading: false });
+//     });
+// };
