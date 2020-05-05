@@ -4,7 +4,8 @@ import "./searchbar.css";
 
 export default class Searchbar extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    // onSubmit: PropTypes.func.isRequired,
+    newRequest: PropTypes.func.isRequired,  
   };
 
   state = {
@@ -21,15 +22,15 @@ export default class Searchbar extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { query } = this.state;
-    this.props.onSubmit(query);
+    this.props.newRequest(query)
   };
 
   render() {
     const query = this.state.query;
     return (
       <header className="Searchbar">
-        <form className="SearchForm" onSubmit={this.handleSubmit}>
-          <button type="submit" className="SearchForm-button">
+        <form className="SearchForm" >
+          <button type="submit" className="SearchForm-button" newRequest={this.handleSubmit}>
             <span className="SearchForm-button-label">Search</span>
           </button>
 
@@ -46,3 +47,7 @@ export default class Searchbar extends Component {
     );
   }
 }
+
+{/* <form className="SearchForm" onSubmit={this.handleSubmit}> */}
+
+  // this.props.onSubmit(query);

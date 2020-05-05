@@ -24,6 +24,7 @@ export default class App extends Component {
         behavior: "smooth",
       });
     }
+    this.fetchArticles();
   }
 
   fetchArticles = (query, page = 1) => {
@@ -39,6 +40,16 @@ export default class App extends Component {
         this.setState({ isLoading: false });
       });
   };
+  ////////////////////////////////////////////
+  newRequest = (query) => {
+    this.setState({
+      query,
+      page: 1,
+      articles: [],
+    });
+  };
+
+  ////////////////////////////////////////////
 
   handleClickOnMore = () => {
     const { page, query } = this.state;
@@ -63,7 +74,7 @@ export default class App extends Component {
     const { articles, isLoading, largeImgURL, isModalOpen } = this.state;
     return (
       <div>
-        <Searchbar onSubmit={this.fetchArticles} />
+        <Searchbar newRequest={this.newRequest} />
         <ImageGallery items={articles} openModal={this.openModal} />
         {isLoading && <Loader />}
         {articles.length > 0 && <Button onClick={this.handleClickOnMore} />}
@@ -74,3 +85,5 @@ export default class App extends Component {
     );
   }
 }
+
+{/* <Searchbar onSubmit={this.fetchArticles} newRequest={this.newRequest} /> */}
